@@ -1,4 +1,4 @@
-﻿namespace AllInOneAspNet.Models;
+﻿namespace AllInOneAspNet.Models.UserModels;
 
 public class UserSigninRequestModel
 {
