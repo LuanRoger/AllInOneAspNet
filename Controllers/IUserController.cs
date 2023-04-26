@@ -9,12 +9,12 @@ public interface IUserController
     /// </summary>
     /// <param name="signinRequest">Requisição de cadastro do usuário</param>
     /// <returns>Retorna o ID do novo usuário</returns>
-    Task<int> SigninUser(UserSigninRequestModel signinRequest);
+    public Task<int> SigninUser(UserSigninRequestModel signinRequest);
     
     /// <summary>
     /// Autentica um usuário
     /// </summary>
     /// <param name="loginRequest">Requisição de login do usuário</param>
     /// <returns>Retorna um novo JWT para o usuário</returns>
-    Task<string> LoginUser(UserLoginRequestModel loginRequest);
+    public Task<string> LoginUser(UserLoginRequestModel loginRequest);
 }

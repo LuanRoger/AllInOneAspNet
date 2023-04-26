@@ -9,14 +9,14 @@ public interface IClientController
     /// </summary>
     /// <param name="registerRequestModel">Requisição de cadastro do cliente</param>
     /// <returns>O ID do novo cliente</returns>
-    Task<int> RegisterClient(ClientRegisterRequestModel registerRequestModel);
+    public Task<int> RegisterClient(ClientRegisterRequestModel registerRequestModel);
     
     /// <summary>
     /// Recupera os clientes cadastrados por um usuário
     /// </summary>
     /// <param name="userId">ID do usuario</param>
     /// <returns>Uma lista dos clientes cadastrados pelo usuario</returns>
-    Task<IReadOnlyList<ClientReadModel>> GetUserClients(int userId);
+    public Task<IReadOnlyList<ClientReadModel>> GetUserClients(int userId);
     
     /// <summary>
     /// Atualiza os dados de um cliente
@@ -24,12 +24,12 @@ public interface IClientController
     /// <param name="updateRequest">Requisição de atualização com as novas informações do cliente</param>
     /// <param name="clientId">ID do cliente que será atualizado</param>
     /// <returns>O ID do cliente atualizado</returns>
-    Task<int> UpdateClient(ClientUpdateRequestModel updateRequest, int clientId);
+    public Task<int> UpdateClient(ClientUpdateRequestModel updateRequest, int clientId);
     
     /// <summary>
     /// Deleta um cliente
     /// </summary>
     /// <param name="clientId">ID do cliente que será deletado</param>
     /// <returns>O ID do cliente deletado</returns>
-    Task<int> DeleteClient(int clientId);
+    public Task<int> DeleteClient(int clientId);
 }
