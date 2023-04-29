@@ -13,14 +13,16 @@ public class UserRepository : IUserRepository
         this.dbContext = dbContext;
     }
     
-    public async Task RegisterUser(UserModel user) => 
-        await dbContext.user.AddAsync(user);
+    public async Task<UserModel> RegisterUser(UserModel user) => 
+        (await dbContext.user.AddAsync(user)).Entity;
 
     public async Task<UserModel?> GetUserById(int userId) => 
         await dbContext.user.FindAsync(userId);
 
-    public async Task<UserModel?> GetUserByUsernamePassword(string username, string password) =>
+    public async Task<UserModel?> GetUserByUsername(string username) =>
         await dbContext.user
-            .FirstOrDefaultAsync(user => user.username == username && 
-                                         user.password == password);
+            .FirstOrDefaultAsync(user => user.username == username);
+    
+    public async Task FlushChanges() =>
+        await dbContext.SaveChangesAsync();
 }

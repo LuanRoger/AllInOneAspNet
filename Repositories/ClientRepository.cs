@@ -13,8 +13,8 @@ public class ClientRepository : IClientRepository
         this.dbContext = dbContext;
     }
     
-    public async Task RegisterClient(ClientModel client) =>
-        await dbContext.client.AddAsync(client);
+    public async Task<int> RegisterClient(ClientModel client) =>
+        (await dbContext.client.AddAsync(client)).Entity.id;
 
     public async Task<ClientModel?> GetClientById(int clientId) =>
         await dbContext.client.FindAsync(clientId);
@@ -25,6 +25,9 @@ public class ClientRepository : IClientRepository
             .OrderBy(client => client.id)
             .ToListAsync();
 
-    public async Task<ClientModel> DeleteClient(ClientModel clientModel) =>
+    public ClientModel DeleteClient(ClientModel clientModel) =>
         dbContext.client.Remove(clientModel).Entity;
+    
+    public async Task FlushChanges() =>
+        await dbContext.SaveChangesAsync();
 }

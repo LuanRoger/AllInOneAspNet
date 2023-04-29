@@ -8,7 +8,8 @@ public interface IUserRepository
     /// Cadastra um novo usuário
     /// </summary>
     /// <param name="user">Usuário para cadastrar</param>
-    public Task RegisterUser(UserModel user);
+    /// <returns>Retonar o ususário cadastrado</returns>
+    public Task<UserModel> RegisterUser(UserModel user);
 
     /// <summary>
     /// Resgatar um usuário pelo ID
@@ -18,10 +19,15 @@ public interface IUserRepository
     public Task<UserModel?> GetUserById(int userId);
     
     /// <summary>
-    /// Resgatar um usuário pelo <c>username</c> e <c>password</c>
+    /// Resgatar um usuário pelo <c>username</c>
     /// </summary>
     /// <param name="username">Nome do usuario</param>
-    /// <param name="password">Senha do usuario</param>
+    /// <returns>Retorna um usuario que possua o nome de usuario especificado.</returns>
+    public Task<UserModel?> GetUserByUsername(string username);
+    
+    /// <summary>
+    /// Apply all changes made to the database
+    /// </summary>
     /// <returns></returns>
-    public Task<UserModel?> GetUserByUsernamePassword(string username, string password);
+    public Task FlushChanges();
 }

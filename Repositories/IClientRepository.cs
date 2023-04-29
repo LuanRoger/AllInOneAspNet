@@ -8,7 +8,7 @@ public interface IClientRepository
     /// Cadastra um novo cliente
     /// </summary>
     /// <param name="client">Modelo contendo as infomações do cliente para cadastro</param>
-    public Task RegisterClient(ClientModel client);
+    public Task<int> RegisterClient(ClientModel client);
     
     /// <summary>
     /// Resgata um cliente pelo ID
@@ -29,5 +29,11 @@ public interface IClientRepository
     /// </summary>
     /// <param name="clientModel">Cliente para deletar</param>
     /// <returns>Informações do cliente deletado</returns>
-    public Task<ClientModel> DeleteClient(ClientModel clientModel);
+    public ClientModel DeleteClient(ClientModel clientModel);
+    
+    /// <summary>
+    /// Apply all changes made to the database
+    /// </summary>
+    /// <returns></returns>
+    public Task FlushChanges();
 }

@@ -4,6 +4,7 @@ namespace AllInOneAspNet.Models.ClientModels;
 
 public class ClientReadModel
 {
+    public int id { get; init; }
     public string username { get; init; }
     public UserReadModel createdBy { get; init; }
     
@@ -14,6 +15,7 @@ public class ClientReadModel
     /// <returns>Um novo <c>ClientReadModel</c> referente ao <c>ClientModel</c></returns>
     public static ClientReadModel FromClientModel(ClientModel clientModel) => new()
     {
+        id = clientModel.id,
         username = clientModel.username,
         createdBy = UserReadModel.FromUserModel(clientModel.createdBy)
     };
