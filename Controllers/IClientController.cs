@@ -9,7 +9,7 @@ public interface IClientController
     /// </summary>
     /// <param name="registerRequestModel">Requisição de cadastro do cliente</param>
     /// <returns>O ID do novo cliente</returns>
-    public Task<int> RegisterClient(ClientRegisterRequestModel registerRequestModel);
+    public Task<int> RegisterClient(ClientRegisterRequestModel registerRequestModel, int userId);
     
     /// <summary>
     /// Recupera os clientes cadastrados por um usuário

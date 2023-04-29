@@ -8,8 +8,8 @@ public interface IUserController
     /// Cadastra um novo usuário
     /// </summary>
     /// <param name="signinRequest">Requisição de cadastro do usuário</param>
-    /// <returns>Retorna o ID do novo usuário</returns>
-    public Task<int> SigninUser(UserSigninRequestModel signinRequest);
+    /// <returns>Retorna um novo JWT para o usuário</returns>
+    public Task<string> SigninUser(UserSigninRequestModel signinRequest);
     
     /// <summary>
     /// Autentica um usuário
