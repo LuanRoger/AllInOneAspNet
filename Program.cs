@@ -1,12 +1,17 @@
+using System.Text;
+using AllInOneAspNet;
 using AllInOneAspNet.Endpoints;
 using AllInOneAspNet.Models.ClientModels;
 using AllInOneAspNet.Models.UserModels;
 using AllInOneAspNet.Repositories;
 using AllInOneAspNet.Repositories.Contexts;
+using AllInOneAspNet.Services.Jwt;
 using AllInOneAspNet.Validators.ClientValidators;
 using AllInOneAspNet.Validators.UserValidators;
 using FluentValidation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using ILogger = Serilog.ILogger;
 
@@ -21,7 +26,7 @@ builder.Host.UseSerilog(logger);
 
 builder.Services.AddDbContext<DatabaseContext>(options =>
 {
-    string connectionString = @"Data Source=AllInOneDatabase.db;Version=3;";
+    const string connectionString = @"Data Source=AllInOneDatabase.db;Version=3;";
     options.UseSqlite(connectionString);
 });
 builder.Services.AddScoped<UserRepository>();
@@ -32,7 +37,41 @@ builder.Services.AddScoped<IValidator<UserLoginRequestModel>, UserLoginRequestVa
 builder.Services.AddScoped<IValidator<ClientRegisterRequestModel>, ClientRegisterRequestValidator>();
 builder.Services.AddScoped<IValidator<ClientUpdateRequestModel>, ClientUpdateRequestValidator>();
 
+builder.Services.AddSingleton<JwtService>(_ =>
+{
+    byte[] byteKey = Encoding.UTF8.GetBytes(JwtConsts.JWT_SIMETRIC_KEY_SHA256);
+    
+    return new(byteKey);
+});
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    byte[] byteKey = Encoding.UTF8.GetBytes(JwtConsts.JWT_SIMETRIC_KEY_SHA256);
+    
+    options.TokenValidationParameters = new()
+    {
+        ValidateIssuer = true,
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(byteKey),
+        ValidAlgorithms = new [] { SecurityAlgorithms.HmacSha256Signature }
+    };
+});
+
 WebApplication app = builder.Build();
+
+using (IServiceScope scope = app.Services.CreateScope())
+{
+    DatabaseContext dbContext = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
+    dbContext.Database.EnsureCreated();
+}
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 RouteGroupBuilder userGroup = app.MapGroup("user");
 userGroup.MapUserEndpoints();
