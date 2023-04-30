@@ -13,8 +13,8 @@ public class ClientRepository : IClientRepository
         this.dbContext = dbContext;
     }
     
-    public async Task<int> RegisterClient(ClientModel client) =>
-        (await dbContext.client.AddAsync(client)).Entity.id;
+    public async Task<ClientModel> RegisterClient(ClientModel client) =>
+        (await dbContext.client.AddAsync(client)).Entity;
 
     public async Task<ClientModel?> GetClientById(int clientId) =>
         await dbContext.client.FindAsync(clientId);

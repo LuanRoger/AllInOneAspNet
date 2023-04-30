@@ -28,6 +28,5 @@ public interface IUserRepository
     /// <summary>
     /// Apply all changes made to the database
     /// </summary>
-    /// <returns></returns>
     public Task FlushChanges();
 }
