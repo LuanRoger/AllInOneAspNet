@@ -1,17 +1,91 @@
-﻿namespace AllInOneAspNet.Endpoints;
+﻿using AllInOneAspNet.Controllers;
+using AllInOneAspNet.Exceptions;
+using AllInOneAspNet.Models.ClientModels;
+using AllInOneAspNet.Services.Jwt;
+using Microsoft.AspNetCore.Mvc;
+
+namespace AllInOneAspNet.Endpoints;
 
 public static class ClientEndpoints
 {
     public static RouteGroupBuilder MapClientEndpoints(this RouteGroupBuilder group)
     {
-        group.MapGet("/", (HttpContext context) => 
-            Results.Ok("Resgatar clientes"));
-        group.MapPost("/", (HttpContext context) => 
-            Results.Created("client/", null));
-        group.MapPut("{id:int}", (HttpContext context, int id) => 
-            Results.Ok($"Atualizar cliente com ID {id}"));
-        group.MapDelete("{id:int}", (HttpContext context, int id) => 
-            Results.Ok($"Deletar cliente com ID {id}"));
+        group.MapGet("/", 
+            async (HttpContext context, 
+                [FromServices] ClientController controller) =>
+        {
+            int userClaimId = int.Parse(context.User.Claims
+                .First(claim => claim.Type == JwtConsts.CLAIM_ID).Value);
+            
+            IReadOnlyList<ClientReadModel> userClients;
+            try
+            {
+                userClients = await controller.GetUserClients(userClaimId);
+            }
+            catch(UserNotFoundException e)
+            {
+                return Results.BadRequest(e.Message);
+            }
+            
+            return Results.Ok(userClients);
+        });
+        group.MapPost("/", 
+            async (HttpContext context,
+                [FromServices] ClientController controller,
+                [FromBody] ClientRegisterRequestModel registerRequest) =>
+        {
+            int userClaimId = int.Parse(context.User.Claims
+                .First(claim => claim.Type == JwtConsts.CLAIM_ID).Value);
+            
+            int newClientId;
+            try
+            {
+                newClientId = await controller.RegisterClient(registerRequest, userClaimId);
+            }
+            catch(Exception e) when (e is InvalidRequestInfoException or 
+                                         UserNotFoundException)
+            {
+                return Results.BadRequest(e.Message);
+            }
+            
+            return Results.Created($"client/{newClientId}", newClientId);
+        });
+        group.MapPut("{id:int}", 
+            async (HttpContext context, 
+                [FromRoute] int id,
+                [FromServices] ClientController controller,
+                [FromBody] ClientUpdateRequestModel updateRequest) =>
+        {
+            int updatedClientId;
+            try
+            {
+                updatedClientId = await controller.UpdateClient(updateRequest, id);
+            }
+            catch(Exception e) when (e is InvalidRequestInfoException or 
+                                         ClientNotFoundException)
+            {
+                return Results.BadRequest(e.Message);
+            }
+            
+            return Results.Ok(updatedClientId);
+        });
+        group.MapDelete("{id:int}", 
+                async (HttpContext context,
+            [FromRoute] int id,
+            [FromServices] ClientController controller) =>
+        {
+            int deletedClientId;
+            try
+            {
+                deletedClientId = await controller.DeleteClient(id);
+            }
+            catch(ClientNotFoundException e)
+            {
+                return Results.BadRequest(e.Message);
+            }
+            
+            return Results.Ok(deletedClientId);
+        });
         
         return group;
     }
