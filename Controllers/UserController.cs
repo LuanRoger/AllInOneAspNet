@@ -61,6 +61,7 @@ public class UserController : IUserController
              password = signinRequest.password
          };
          UserModel registeredUser = await repository.RegisterUser(user);
+         await repository.FlushChanges();
          
          logger.Information("User Username[{Username}] registered", user.username);
          #endregion

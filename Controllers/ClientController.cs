@@ -58,12 +58,12 @@ public class ClientController : IClientController
             username = registerRequestModel.username,
             createdBy = relatedUser
         };
-        int newClientId = await repository.RegisterClient(client);
+        ClientModel newClient = await repository.RegisterClient(client);
         await repository.FlushChanges();
         #endregion
         
         logger.Information("Client registered successfully");
-        return newClientId;
+        return newClient.id;
     }
 
     public async Task<IReadOnlyList<ClientReadModel>> GetUserClients(int userId)
@@ -155,6 +155,7 @@ public class ClientController : IClientController
         #region Delete client
         logger.Information("Deleting client ID[{Id}]", client.id);
         ClientModel deletedClient = repository.DeleteClient(client);
+        await repository.FlushChanges();
         #endregion
         
         logger.Information("Client ID[{Id}] deleted successfully", deletedClient.id);

@@ -1,5 +1,5 @@
 using System.Text;
-using AllInOneAspNet;
+using AllInOneAspNet.Controllers;
 using AllInOneAspNet.Endpoints;
 using AllInOneAspNet.Models.ClientModels;
 using AllInOneAspNet.Models.UserModels;
@@ -26,7 +26,7 @@ builder.Host.UseSerilog(logger);
 
 builder.Services.AddDbContext<DatabaseContext>(options =>
 {
-    const string connectionString = @"Data Source=AllInOneDatabase.db;Version=3;";
+    const string connectionString = @"Data Source=AllInOneDatabase.db;";
     options.UseSqlite(connectionString);
 });
 builder.Services.AddScoped<UserRepository>();
@@ -36,6 +36,9 @@ builder.Services.AddScoped<IValidator<UserSigninRequestModel>, UserSigninRequest
 builder.Services.AddScoped<IValidator<UserLoginRequestModel>, UserLoginRequestValidator>();
 builder.Services.AddScoped<IValidator<ClientRegisterRequestModel>, ClientRegisterRequestValidator>();
 builder.Services.AddScoped<IValidator<ClientUpdateRequestModel>, ClientUpdateRequestValidator>();
+
+builder.Services.AddScoped<UserController>();
+builder.Services.AddScoped<ClientController>();
 
 builder.Services.AddSingleton<JwtService>(_ =>
 {
@@ -58,9 +61,11 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuer = true,
         ValidateIssuerSigningKey = true,
         IssuerSigningKey = new SymmetricSecurityKey(byteKey),
-        ValidAlgorithms = new [] { SecurityAlgorithms.HmacSha256Signature }
+        ValidIssuer = JwtConsts.JWT_ISSUER,
+        ValidateAudience = false
     };
 });
+builder.Services.AddAuthorization();
 
 WebApplication app = builder.Build();
 
@@ -73,10 +78,12 @@ using (IServiceScope scope = app.Services.CreateScope())
 app.UseAuthentication();
 app.UseAuthorization();
 
-RouteGroupBuilder userGroup = app.MapGroup("user");
+RouteGroupBuilder userGroup = app.MapGroup("user")
+    .AllowAnonymous();
 userGroup.MapUserEndpoints();
 
-RouteGroupBuilder clientGroup = app.MapGroup("client");
+RouteGroupBuilder clientGroup = app.MapGroup("client")
+    .RequireAuthorization(policyBuilder => policyBuilder.RequireClaim(JwtConsts.CLAIM_ID));
 clientGroup.MapClientEndpoints();
 
 app.Run();
