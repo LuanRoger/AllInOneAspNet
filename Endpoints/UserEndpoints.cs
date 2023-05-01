@@ -38,8 +38,11 @@ public static class UserEndpoints
             {
                 userJwt = await controller.LoginUser(loginRequest);
             }
-            catch(Exception e) when (e is InvalidRequestInfoException or 
-                                         UserNotFoundException or
+            catch(UserNotFoundException e)
+            {
+                return Results.NotFound(e.Message);
+            }
+            catch(Exception e) when (e is InvalidRequestInfoException or
                                          WrongUserPasswordException)
             {
                 return Results.BadRequest(e.Message);

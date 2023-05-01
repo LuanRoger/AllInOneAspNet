@@ -24,7 +24,7 @@ public static class ClientEndpoints
             }
             catch(UserNotFoundException e)
             {
-                return Results.BadRequest(e.Message);
+                return Results.NotFound(e.Message);
             }
             
             return Results.Ok(userClients);
@@ -42,10 +42,13 @@ public static class ClientEndpoints
             {
                 newClientId = await controller.RegisterClient(registerRequest, userClaimId);
             }
-            catch(Exception e) when (e is InvalidRequestInfoException or 
-                                         UserNotFoundException)
+            catch(InvalidRequestInfoException e)
             {
                 return Results.BadRequest(e.Message);
+            }
+            catch(UserNotFoundException e)
+            {
+                return Results.NotFound(e.Message);
             }
             
             return Results.Created($"client/{newClientId}", newClientId);
@@ -61,16 +64,19 @@ public static class ClientEndpoints
             {
                 updatedClientId = await controller.UpdateClient(updateRequest, id);
             }
-            catch(Exception e) when (e is InvalidRequestInfoException or 
-                                         ClientNotFoundException)
+            catch(InvalidRequestInfoException e)
             {
                 return Results.BadRequest(e.Message);
+            }
+            catch(ClientNotFoundException e)
+            {
+                return Results.NotFound(e.Message);
             }
             
             return Results.Ok(updatedClientId);
         });
         group.MapDelete("{id:int}", 
-                async (HttpContext context,
+                async (HttpContext _,
             [FromRoute] int id,
             [FromServices] ClientController controller) =>
         {
@@ -81,7 +87,7 @@ public static class ClientEndpoints
             }
             catch(ClientNotFoundException e)
             {
-                return Results.BadRequest(e.Message);
+                return Results.NotFound(e.Message);
             }
             
             return Results.Ok(deletedClientId);
