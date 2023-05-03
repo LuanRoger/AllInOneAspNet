@@ -7,21 +7,21 @@ Para quem nunca usou o .NET talvez se sinta perdido, este é um artigo para quem
 
 Para não ficar perdido ou se quiser ver apenas um conteúdo específico aqui está a tabela de conteúdo:
 
-- O que é o ASP.NET
-- REST.API
-- Criar um projeto
-- Criar as primeiras rotas
-- Modelos
-- DI (Dependency Injection)
-- Iniciar o Entity Framework
-- Usar o Entity Framework com SQLite
-- Repository pattern
-- Logging com Serilog
-- Criar validadores
-- Autenticação e Autorização com JWT usando chave simétrica.
-- Criar controladores
-- Implementar os endpoints
-- Iniciar o Swagger
+- [O que é o ASP.NET](https://github.com/LuanRoger/AllInOneAspNet#o-que-%C3%A9-aspnet)
+- [REST.API](https://github.com/LuanRoger/AllInOneAspNet#rest-api)
+- [Criar um projeto](https://github.com/LuanRoger/AllInOneAspNet#criar-um-projeto)
+- [Criar as primeiras rotas](https://github.com/LuanRoger/AllInOneAspNet#criar-as-primeiras-rotas)
+- [Modelos](https://github.com/LuanRoger/AllInOneAspNet#modelos)
+- [DI (Dependency Injection)](https://github.com/LuanRoger/AllInOneAspNet#di-dependency-injection)
+- [Entity Framework](https://github.com/LuanRoger/AllInOneAspNet#entity-framework)
+- [Usar o Entity Framework com SQLite](https://github.com/LuanRoger/AllInOneAspNet#usar-o-entity-framework-com-sqlite)
+- [Repository Pattern](https://github.com/LuanRoger/AllInOneAspNet#repository-pattern)
+- [Logging com Serilog](https://github.com/LuanRoger/AllInOneAspNet#logging-com-serilog)
+- [Criar validadores](https://github.com/LuanRoger/AllInOneAspNet#criar-validadores)
+- [Autenticação e Autorização com JWT usando chave simétrica](https://github.com/LuanRoger/AllInOneAspNet#autentica%C3%A7%C3%A3o-e-autoriza%C3%A7%C3%A3o-com-jwt-usando-chave-sim%C3%A9trica)
+- [Criar controladores](https://github.com/LuanRoger/AllInOneAspNet#criar-controladores)
+- [Implementar os endpoints](https://github.com/LuanRoger/AllInOneAspNet#implementar-endpoints)
+- [Iniciar o Swagger](https://github.com/LuanRoger/AllInOneAspNet#iniciar-e-configurar-o-swagger)
 
 # O que é ASP.NET
 
@@ -539,7 +539,7 @@ public class Blog
 ```
 Fonte: https://learn.microsoft.com/en-us/ef/core/modeling/#use-fluent-api-to-configure-a-model
 
-O exemplo acima mostra como é feita com usando *fluent API* (note a parte destacada em roxo), usando essa abordagem é necessário sobrescrever o método `OnModelCreating`. Mas a forma que iremos mapear nossos objetos é usando atributos:
+O exemplo acima mostra como é feita com usando *fluent API*, usando essa abordagem é necessário sobrescrever o método `OnModelCreating`. Mas a forma que iremos mapear nossos objetos é usando atributos:
 
 ```csharp
 internal class MyContext : DbContext
