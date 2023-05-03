@@ -1,4 +1,5 @@
 # All in One REST API com ASP.NET
+[![jwt_log](https://jwt.io/img/badge-compatible.svg)](https://jwt.io)
 
 O [ASP.NET](https://dotnet.microsoft.com/en-us/apps/aspnet) hoje é um dos principais frameworks para criar REST API, conta com uma vasta variedade de recursos, incluindo suporte para autenticação, autorização, documentação de API com Swagger, roteamento, versionamento, além de uma grande comunidade de desenvolvedores para ajudar a solucionar problemas. Para aqueles que querem começar com o framework ou aqueles que querem rever algum conceito, este artigo vai servir todos público, este é um All in One (Tudo em Um), vou cobrir vários assuntos básicos e alguns poucos avançados de forma mais completa possível, mostrando como e porque fazer, além de explicar todos os códigos que serão mostrados aqui.
 
@@ -169,7 +170,7 @@ Caso não queira que execute o navegador toda vez que executar a API, vá em `./
 
 Vamos fazer uma requisição `GET` para o endpoint `/`, isso deve retornar o “Hello World” como resposta:
 
-```json
+```
 Hello World
 ```
 
@@ -1962,17 +1963,15 @@ Este projeto vai estar open-source no GitHub para quem quiser se localizar melho
 
 Espero realmente que todos tenham conseguido entender ou até aprendido algo novo, caso tenha alguma dúvida comentem aqui mesmo ou na aba de Discussão no GitHub.
 
-[LuanRoger/AllInOneAspNet · Discussions · GitHub](https://github.com/LuanRoger/AllInOneAspNet/discussions)
+[![GitHubDiscussions](https://img.shields.io/badge/Discussions-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/LuanRoger/AllInOneAspNet/discussions/categories/q-a)
 
 **Obrigado a todos que leram até aqui 💖**.
 
-[https://github.com/sponsors/LuanRoger](https://github.com/sponsors/LuanRoger)
+[![Github-sponsors](https://img.shields.io/badge/sponsor-30363D?style=for-the-badge&logo=GitHub-Sponsors&logoColor=#EA4AAA)](https://github.com/sponsors/LuanRoger)
 
 ### Keep in touch:
-
-[Luan Roger | LinkedIn](https://www.linkedin.com/in/luan-roger)
-
-[LuanRoger (ROG) (github.com)](https://github.com/LuanRoger)
+[![LinkedIn](https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/luan-roger) [![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](
+https://github.com/LuanRoger)
 
 *Peace*✌️
 
